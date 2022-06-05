@@ -1,0 +1,73 @@
+{% extends 'bks/base.html' %}
+{% block content %}
+{% load static %}
+
+<h2>チェック済みの本</h2>
+<div class="uk-grid-small-column-small uk-grid-row-large uk-child-width-1-4@s uk-text-center" uk-height-match="target: > div > .uk-card" uk-grid>
+{% for book in book_status.values %}
+    <div>
+        <div class="uk-card uk-card-default uk-card-small">
+            <div class="uk-card-media-top">
+                <img src="{{ book.Item.largeImageUrl }}" alt="">
+            </div>
+            <div class="uk-card-body">
+                <div>
+                    <p><small>{{ book.Item.publisherName }}</small><br>
+                    {{ book.Item.title }}</p>
+                </div>
+                <button class="uk-button uk-button-secondary uk-button-small impress-set" type="button" value="{{ book.checkuuid }},{{ book.Item.largeImageUrl }},{{ book.Item.publisherName }},{{ book.Item.title }},{{ book.Item.author }},{{ book.Item.salesDate }},{{ book.Item.isbn }}">
+                    <span uk-icon="icon: check; ratio: 0.8"></span> 読了する
+                </button>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+<div id="impress-new" uk-modal>
+    <div class="uk-modal-dialog">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">感想を入力</h2>
+        </div>
+        <div class="uk-modal-body" uk-overflow-auto>
+            <form method="post" id="impress-form">
+                <div class="bk-box-container">
+                    <div class="bk-box">
+                        <div class="bk-box-header">
+                            <div uk-grid>
+                                <div class="uk-width-auto a-book-image">
+                                    <img id="nw-largeImageUrl" src="{% static 'images/book_mystery.png' %}" alt="" uk-img>
+                                </div>
+                                <div class="uk-width-expand a-book-container">
+                                    <span id="nw-publisherName"></span><br>
+                                    <span id="nw-title" class="title"></span>
+                                    <div uk-grid>
+                                        <div class="a-status">
+                                            <ul>
+                                                <li><span id="nw-author"></span></li>
+                                                <li><span id="nw-salesDate"></span></li>
+                                                <li><span id="nw-isbn"></span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% csrf_token %}
+                <div class="uk-margin">
+                    {{ form.checkuuid }}
+                    {{ form.body }}
+                </div>
+                <div class="uk-margin">
+                    <button type="submit" class="submit uk-button uk-button-secondary">読了する！</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

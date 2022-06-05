@@ -1,0 +1,262 @@
+{% extends 'bks/base.html' %}
+{% block content %}
+{% load static %}
+
+<input type="hidden" id="inquiryuuid" value="{{ inquiry.inquiryuuid }}"></input>
+<h1 class="q-title">{{ inquiry.title }}</h1>
+<div class="q-container" uk-grid>
+    <div class="uk-width-1-1">
+    <p>{{ inquiry.body|linebreaksbr }}</p>
+    </div>
+    <div class="uk-width-auto"><img src="{% static 'images/icon.png' %}" class="user-q-icon"></div>
+    <div class="uk-width-expand">
+    <p>質問者：{{ inquiry.useruuid.nickname }}<br>
+    {{ inquiry.datetime|date:"Y/m/d H:i" }}</p>
+    </div>
+    <div class="uk-width-auto">
+        <a href="/search/tags={{ inquiry.tags }}">#{{ inquiry.tags }}</a>
+    </div>
+</div>
+
+<ul id="comment-tab" uk-tab>
+    <li><a><span uk-icon="icon: comments; ratio: 0.8"></span>コメント</a></li>
+    <li><a><span uk-icon="icon: commenting; ratio: 0.8"></span>新しいコメント</a></li>
+    <li><a><span uk-icon="icon: social; ratio: 0.8"></span>共有</a></li>
+</ul>
+<ul class="uk-switcher uk-margin">
+    <li>
+        <h2 class="a-h2">
+            <span uk-icon="icon: comments; ratio: 1.4"></span> コメント
+            <button class="new-comment uk-button uk-button-primary uk-button-small">
+                <span uk-icon="icon: commenting; ratio: 0.8"></span> コメントする
+            </button>
+        </h2>
+        <hr>
+        <div class="bk-box-container">
+        {% for book in reply_book.values %}
+            <div class="bk-box">
+                <div class="bk-box-header">
+                    <div uk-grid>
+                        <div class="uk-width-auto a-book-image">
+                            <img class="book-image" data-src="{{ book.Item.largeImageUrl }}" alt="" uk-img>
+                        </div>
+                        <div class="uk-width-expand a-book-container">
+                            {{ book.Item.publisherName }}<br>
+                            <span class="title" id="ti-{{ book.Item.isbn }}">{{ book.Item.title }}</span>
+                            <div uk-grid>
+                                <div class="uk-width-5-6 a-status">
+                                    <ul>
+                                        <li>{{ book.Item.author }}</li>
+                                        <li>{{ book.Item.salesDate }}</li>
+                                        <li>ISBN {{ book.Item.isbn }}</li>
+                                        <li><a class="uk-button uk-button-primary uk-button-small" href="{{ book.Item.itemUrl }}">販売ページ</a><span class="price">{{ book.Item.itemPrice }}円(税込)</span></li>
+                                    </ul>
+                                </div>
+                                <div class="uk-width-1-6">
+                                    <button class="check uk-button uk-button-link uk-width-1-1" id="id-{{ book.Item.isbn }}" value="{{ book.Item.isbn }}">
+                                    {% if book.Item.isbn in checked_book %}
+                                        <small>チェック済み</small><br><span class="uk-icon uk-icon-image icon-checked"></span>
+                                    {% else %}
+                                        <small>チェック</small><br><span class="uk-icon uk-icon-image icon-check"></span>
+                                    {% endif %}
+                                    </button>
+                                    <button class="impress-open uk-button uk-button-link uk-width-1-1" value="{{ book.Item.isbn }}">
+                                        <small>読んだ感想</small><br><span uk-icon="icon: reply"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% for a in reply_list %}
+                    {% if book.Item.isbn == a.bookisbn %}
+                        <div class="bk-box-body" uk-grid>
+                                <div class="uk-width-auto a-icon"><img src="{% static 'images/icon.png' %}" class="user-a-icon"></div>
+                                <div class="uk-width-expand uk-flex uk-flex-middle">
+                                    <h4>{{ a.title }}</h4>
+                                </div>
+                                <div class="uk-width-1-1">
+                                    <p>回答者：{{ a.useruuid.nickname }}<span class="uk-text-muted"> ―― {{ a.datetime|date:"Y/m/d H:i" }}</span></p>
+                                </div>
+                                <div class="uk-width-1-1">
+                                    <p>{{ a.body|linebreaksbr }}</p>
+                                </div>
+                        </div>
+                        <div class="bk-box-footer" uk-grid>
+                            <div class="name uk-width-1-2">
+                                {% if user.is_authenticated == 1 %}
+                                    {% if a.replyuuid in liked_reply %}
+                                        <button class="like uk-button uk-button-link" id="id-{{ a.replyuuid }}" value="{{ a.replyuuid }}">
+                                            <span class="icon-liked uk-icon uk-icon-image"></span>
+                                        </button>
+                                    {% else %}
+                                        <button class="like uk-button uk-button-link" id="id-{{ a.replyuuid }}" value="{{ a.replyuuid }}">
+                                            <span class="icon-like uk-icon uk-icon-image"></span>
+                                        </button>
+                                    {% endif %}
+                                {% endif %}
+                                <span class="a-goods" id="goods-{{ a.replyuuid }}">{{ a.goods }}</span>参考になる
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+
+                <a href="javascript:isbnset('{{ book.Item.isbn }}', '{{ book.Item.largeImageUrl }}', '{{ book.Item.publisherName }}', '{{ book.Item.title }}', '{{ book.Item.author }}', '{{ book.Item.salesDate }}', '{{ book.Item.itemPrice }}');" class="new-comment chain-comment uk-button uk-button-primary uk-button-small uk-align-right">
+                    <span uk-icon="icon: commenting; ratio: 0.8"></span> この本のコメントを追加
+                </a>
+            
+            </div>
+
+
+        {% endfor %}
+        </div>
+        
+        <div id="impress-list" uk-modal>
+            <div class="uk-modal-dialog">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="uk-modal-header">
+                    <h2 class="uk-modal-title" id="impress-title"></h2>
+                </div>
+                <div class="uk-modal-body" uk-overflow-auto>
+                    <div id="impress-results"></div>
+                </div>
+            </div>
+        </div>
+    </li>
+
+    <li>
+        <h2 class="a-h2">
+            <span uk-icon="icon: commenting; ratio: 1.4"></span> 新しいコメント
+            <button class="comment uk-button uk-button-primary uk-button-small">
+                <span uk-icon="icon: chevron-left; ratio: 0.8"></span> コメントへもどる
+            </button>
+        </h2>
+        <hr>
+        {% if user.is_authenticated == 1 %}
+            <section class="common-form">
+                <form method="post" id="reply-form">
+                    {% csrf_token %}
+                    {{ form.bookisbn }}
+                    <div class="bk-box-container">
+                        <div class="bk-box">
+                            <div class="bk-box-header">
+                                <div class="uk-margin-small">
+                                    <small>本を貼り付け：</small><br>
+                                    <button class="uk-button uk-button-primary uk-margin-small-right" type="button" uk-toggle="target: #rakuten-search">楽天検索</button>
+                                    <button class="uk-button uk-button-primary" type="button" uk-toggle="target: #rakuten-search" disabled>バーコード検索</button>
+                                </div>
+                        
+                                <div uk-grid>
+                                    <div class="uk-width-auto a-book-image">
+                                        <img id="nw-largeImageUrl" src="{% static 'images/book_mystery.png' %}" alt="" uk-img>
+                                    </div>
+                                    <div class="uk-width-expand a-book-container">
+                                        <span id="nw-publisherName"></span><br>
+                                        <span id="nw-title" class="title">まずはオススメする本をコメントに貼り付けよう！</span>
+                                        <div uk-grid>
+                                            <div class="a-status">
+                                                <ul>
+                                                    <li><span id="nw-author">「楽天検索」から楽天ブックスで検索できる</span></li>
+                                                    <li><span id="nw-salesDate"></span></li>
+                                                    <li><span id="nw-isbn"></span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="bk-box-body" uk-grid>
+                                <div class="uk-width-auto a-icon"><img src="{% static 'images/icon.png' %}" class="user-a-icon"></div>
+                                <div class="uk-width-expand uk-flex uk-flex-middle">
+                                    {{ form.title }}
+                                </div>
+                                <div class="uk-width-1-1">
+                                    <p>回答者：{{ user.nickname }}</p>
+                                </div>
+                                <div class="uk-width-1-1">
+                                    {{ form.body }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="bk-box-container">
+                        <div class="bk-box">
+                            <div class="bk-box-header">
+                                <div uk-grid>
+                                    <div class="uk-width-auto a-book-image">
+                                        <img id="nw-largeImageUrl" src="{% static 'images/book_mystery.png' %}" alt="" uk-img>
+                                    </div>
+                                    <div class="uk-width-expand a-book-container">
+                                        <span id="nw-publisherName"></span><br>
+                                        <span id="nw-title" class="title">ログインしてオススメをコメントで教えてあげよう！</span>
+                                        <div uk-grid>
+                                            <div class="a-status">
+                                                <ul>
+                                                    <li>BooQはみんなで本を見つけるサービス！</li>
+                                                    <li>ログインすると質問、コメント、感想の送信が出来るようになる</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                            </div>
+                            <div class="bk-box-body" uk-grid>
+                                <div class="uk-width-1-1 uk-margin-small">
+                                    <a href='/accounts/login' class="uk-button uk-button-primary uk-margin-small-right">ログイン</a>
+                                    <a href='/accounts/signup' class="uk-button uk-button-primary">新規登録</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endif %}
+
+                <div id="rakuten-search" uk-modal>
+                    <div class="uk-modal-dialog">
+                        <button class="uk-modal-close-default" type="button" uk-close></button>
+                        <div class="uk-modal-header">
+                            <h2 class="uk-modal-title">楽天検索</h2>
+                            <div uk-grid>
+                                <input type="text" id="search_area" class="uk-input uk-width-expand" placeholder="ここに入力して書籍検索…">
+                                <button type="button" id="search_button" class="uk-button uk-button-primary uk-width-auto uk-padding-small uk-padding-remove-vertical"><span uk-icon="icon: search; ratio: 0.8"></span> 検索</button>
+                            </div>
+                        </div>
+                        <div class="uk-modal-body" uk-overflow-auto>
+                            <div id="results">
+                                <h3><span uk-icon="icon: arrow-up; ratio: 2"></span>今一番オススメしたい本を教えてあげよう！</h3>
+                                <p>検索したらクリックしてコメントに貼り付け</p>
+                                <p>本のタイトル、作者名、ISBNコードなどで検索できる</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                {% if user.is_authenticated == 1 %}
+                    <div class="uk-padding-small">
+                        <button type="submit" class="submit uk-button uk-button-primary">送信</button>
+                    </div>
+                {% endif %}
+            </form>
+        </section>
+    </li>
+
+        <li>
+            <h2 class="a-h2">
+                <span uk-icon="icon: social; ratio: 1.4"></span> 質問を共有
+                <button class="comment uk-button uk-button-primary uk-button-small">
+                    <span uk-icon="icon: chevron-left; ratio: 0.8"></span> コメントへもどる
+                </button>
+            </h2>
+            <hr>
+            <div class="uk-padding-small">
+                <a href="" class="uk-icon-button uk-margin-small-right" uk-icon="twitter"></a>
+                <a href="" class="uk-icon-button  uk-margin-small-right" uk-icon="facebook"></a>
+            </div>
+        </li>
+</ul>
+
+{% endblock %}

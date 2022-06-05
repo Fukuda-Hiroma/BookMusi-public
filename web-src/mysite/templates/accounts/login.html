@@ -1,0 +1,47 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+
+<div class="uk-padding-small">
+    <h1>ログイン</h1>
+
+    {% if form.errors %}
+    <p>ユーザー名とパスワードが一致しませんでした。もう一度お試しください。</p>
+    {% endif %}
+
+    {% if next %}
+        {% if user.is_authenticated %}
+        <p>お客様のアカウントでは、このページにアクセスすることはできません。次に進むには
+        アクセス可能なアカウントでログインしてください。</p>
+        {% else %}
+        <p>このページを見るにはログインしてください。</p>
+        {% endif %}
+    {% endif %}
+
+
+
+    <form method="post" action="/accounts/login/">
+        {% csrf_token %}
+        <div class="uk-margin">
+            <div class="uk-inline">
+                <span class="uk-form-icon" uk-icon="icon: user"></span>
+                {{ form.username }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-inline">
+                <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                {{ form.password }}
+            </div>
+        </div>
+        <input type="hidden" name="next" value="{{ next }}"/>
+        <button type="submit" class="submit uk-button uk-button-primary">ログイン</button>
+    </form>
+
+</div>
+
+<div class="uk-padding-small">
+    <a href='/'>トップ</a><br>
+    <a href='/accounts/signup'>新規登録</a>
+</div>
+
+{% endblock %}

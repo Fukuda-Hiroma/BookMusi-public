@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dev</title>
+    <link rel="icon" href="/favicon.ico">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- UIkit -->
+    <link rel="stylesheet" href="{% static 'uikit/css/uikit.min.css' %}" />
+    <script src="{% static 'uikit/js/uikit.min.js' %}"></script>
+    <script src="{% static 'uikit/js/uikit-icons.min.js' %}"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Static -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="{% static 'script.js' %}"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+            <div class="back"><a href="#" onClick="history.back(); return false;"></a>&larr;</div>
+            <div class="current">アカウント</div>
+        </header>
+        <main>
+        {% block content %}
+        {% endblock %}
+        </main>
+    </div>
+</body>
+
+</html>

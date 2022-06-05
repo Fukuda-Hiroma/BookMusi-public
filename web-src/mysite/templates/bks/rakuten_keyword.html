@@ -1,0 +1,31 @@
+<p>「{{ keyword }}」の検索結果</p>
+{% if hits == 0 %}
+    <h4><span uk-icon="icon: warning; ratio: 1.2"></span> キーワードに一致する書籍が見つかりませんでした</h4>
+    <p>キーワードを変えてもう一度お試しください</p>
+{% else %}
+    {% for i in Items %}
+    <div class="bk-box">
+        <div class="bk-box-header">
+            <a href="javascript:isbnset('{{ i.Item.isbn }}', '{{ i.Item.largeImageUrl }}', '{{ i.Item.publisherName }}', '{{ i.Item.title }}', '{{ i.Item.author }}', '{{ i.Item.salesDate }}', '{{ i.Item.itemPrice }}');"></a>
+            <div uk-grid>
+                <div class="uk-width-auto a-book-image">
+                    <img data-src='{{ i.Item.mediumImageUrl }}' alt="" uk-img>
+                </div>
+                <div class="uk-width-expand a-book-container">
+                    {{ i.Item.publisherName }}<br>
+                    <span class="title">{{ i.Item.title }}</span>
+                    <div class="a-status">
+                        <ul>
+                            <li>{{ i.Item.author }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+
+<!-- Rakuten Web Services Attribution Snippet FROM HERE -->
+<a href="https://webservice.rakuten.co.jp/" target="_blank"><img src="https://webservice.rakuten.co.jp/img/credit/200709/credit_22121.gif" border="0" alt="楽天ウェブサービスセンター" title="楽天ウェブサービスセンター" width="221" height="21" /></a>
+<!-- Rakuten Web Services Attribution Snippet TO HERE -->

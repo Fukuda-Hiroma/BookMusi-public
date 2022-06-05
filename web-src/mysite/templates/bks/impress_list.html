@@ -1,0 +1,12 @@
+<div class="bk-box-container">
+    {% for a in impress_list %}
+    <div class="bk-box">
+        <div class="bk-box-body">
+            <p>{{ a.body }}</p>
+        </div>
+        <div class="bk-box-footer" uk-grid>
+            <div class="name uk-width-1-1">送信者：{{ a.checkuuid.useruuid.nickname }}<span class="uk-text-muted"> ―― {{ a.datetime|date:"Y/m/j H:i" }}</span></div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,4 @@
+Django==3.2   # Django3.2
+mysqlclient   # pythonでMySQLに接続するためのドライバ
+requests
+pymongo

@@ -1,0 +1,35 @@
+{% extends 'bks/base.html' %}
+{% block content %}
+
+<div class="uk-light uk-background-center-center uk-cover-container uk-padding-small" style="text-align: center; background-image: url(/static/images/bg1.png);">
+    <h2>あなたの知らない本を、みんなと見つける</h2>
+    <p>小説、レシピ、辞書、マンガ、図鑑……<br>本だったら何でもあり！早速聞いてみよう！</p>
+</div>
+
+<div class="uk-padding-small uk-padding-remove-left">
+    <form method="post" id="inquiry-form">
+        {% csrf_token %}
+        <fieldset class="uk-fieldset">
+            <ol>
+                <li><legend class="uk-legend"><small>こんな本はあるかな？質問をしよう！</small><br>質問のタイトル<small>は？</small></legend>
+                <div class="uk-margin">
+                    {{ form.title }}
+                </div></li>
+                <li><legend class="uk-legend"><small>回答者たちに伝わるように、</small><br>本文<small>を詳しく書こう！</small></legend>
+                <div class="uk-margin">
+                    {{ form.body }}
+                </div></li>
+                <li><legend class="uk-legend"><small>質問を見てもらおう！</small><br>タグ<small>を選択しよう！</small></legend>
+                <div class="uk-margin">
+                    {{ form.tags }}
+                </div></li>
+                <li><legend class="uk-legend"><small>教えてもらえることを願って……</small><br>送信！</legend>
+                <div class="uk-margin">
+                    <button type="submit" class="submit uk-button uk-button-primary">送信</button>
+                </div>
+                </li>
+            </ol>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

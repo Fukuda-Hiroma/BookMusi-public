@@ -1,0 +1,5 @@
+# .gitignoreとは、Gitに反映しないログファイルや一時ファイルを指定する文書
+# djangoが生成するpycacheフォルダや、pycファイルはGitにコミットしないように設定
+*.log
+*.pyc
+__pycache__/

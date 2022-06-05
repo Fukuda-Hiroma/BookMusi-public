@@ -1,0 +1,15 @@
+{
+    "name": "BooQ - あなたの知らない本を、みんなと見つける",
+    "short_name": "BooQ",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "あなたの知らない本を、みんなと見つける",
+    "icons": [
+        {
+            "src": "/static/icons/favicon.png",
+            "sizes": "1080x1080",
+            "type": "image/png"
+        }
+    ]
+}

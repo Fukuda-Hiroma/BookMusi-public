@@ -1,0 +1,53 @@
+{% extends 'bks/base.html' %}
+{% block content %}
+
+<ul id="mypage-tab" uk-tab>
+    <li><a><span uk-icon="icon: bell; ratio: 0.8"></span>通知</a></li>
+    <li><a><span uk-icon="icon: forward; ratio: 0.8"></span>自分の質問</a></li>
+</ul>
+<ul class="uk-switcher uk-margin">
+    <li>
+        <h2 class="a-h2"><span uk-icon="icon: bell; ratio: 1.4"></span> 通知</h2>
+        <hr>
+        <table class="uk-table uk-table-hover uk-table-divider">
+            <thead><p class="uk-padding-small uk-padding-remove-vertical">通知はこまめに確認しましょう！</p></thead>
+            <tbody>
+                {% for my in notification %}
+                    <tr>
+                        <td class="uk-table-link">
+                            <a class="uk-link-reset" href="{{ my.link }}"><small>{{ my.datetime|date:"Y/m/d H:i" }}<br></small>{{ my.massege|linebreaksbr }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </li>
+    <li>
+        <h2 class="a-h2"><span uk-icon="icon: forward; ratio: 1.4"></span> 自分の質問
+        <a href='/new' class="uk-button uk-button-primary uk-button-small uk-align-right">
+            <span uk-icon="icon: plus; ratio: 0.8"></span> 新しい質問
+        </a>
+    </h2>
+        <hr>
+        <div class="bk-box-container">
+            {% for a in inquiry_list %}
+            <div class="bk-box">
+                <div class="bk-box-header"><a href="/inquiry/{{ a.inquiryuuid }}"></a>
+                    <div class="title">{{ a.title }}</div>
+                    <div class="arrow">&gt;</div>
+                </div>
+                <div class="bk-box-body">
+                    <p>{{ a.body }}</p>
+                </div>
+                <div class="bk-box-footer" uk-grid>
+                    <div class="name uk-width-1-2">質問者： {{ a.useruuid.username }}</div>
+                    <div class="tags uk-width-1-2"><a href="/search/tags={{ a.tags }}">#{{ a.tags }}</a></div>
+                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </li>
+</ul>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% spaceless %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BooQ - {{ status.title }}</title>
+    <link rel="icon" type="image/png" href="{% static 'icons/favicon.png' %}">
+    <link rel="manifest" href="{% static 'manifest.webmanifest' %}?0.1.6-n">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- UIkit -->
+    <link rel="stylesheet" href="{% static 'uikit/css/uikit.min.css' %}?0.1.6-n" />
+    <script src="{% static 'uikit/js/uikit.min.js' %}"></script>
+    <script src="{% static 'uikit/js/uikit-icons.min.js' %}"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Static -->
+    <link rel="stylesheet" href="{% static 'style.css' %}?0.1.6-n">
+    <script src="{% static 'script.js' %}?0.1.6-n"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+            {% if status.back == True %}
+                <div class="back"><a href="#" onClick="history.back(); return false;"></a>&larr;</div>
+            {% endif %}
+            <div class="current">{{ status.title }}</div>
+            <div class="icon search"><a href="" uk-icon="icon: search" uk-toggle="target: #search"></a></div>
+        </header>
+        <div id="search" uk-modal>
+            <div class="uk-modal-dialog">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="uk-modal-header">
+                    <h2 class="uk-modal-title">検索</h2>
+                    <div uk-grid>
+                        <input type="text" id="search_inq_area" class="uk-input uk-width-expand" placeholder="ここに入力して質問を検索…">
+                        <button type="button" id="search_inq" class="uk-button uk-button-primary uk-width-auto uk-padding-small uk-padding-remove-vertical"><span uk-icon="icon: search; ratio: 0.8"></span> 検索</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <main>
+        {% block content %}
+        {% endblock %}
+        </main>
+        {% if status.footer == True %}
+            <footer id="fotter">
+                <div class="links" uk-grid>
+                    <div class="uk-width-1-4 navigation"><a href="/"></a><span uk-icon="icon: home; ratio: 1.8"></span><br><span class="text">ホーム</span></div></a>
+                    <div class="uk-width-1-4 navigation"><a href="/mypage"></a><span uk-icon="icon: user; ratio: 1.8"></span><br><span class="text">マイページ</span></div>
+                    <div class="uk-width-1-4 navigation"><a href="/new"></a><span uk-icon="icon: plus; ratio: 1.8"></span><br><span class="text">質問をする</span></div>
+                    <div class="uk-width-1-4 navigation" id="impress"><a href="/impress"></a><span uk-icon="icon: check; ratio: 1.8"></span><br><span class="text">読了</span></div>
+                </div>
+            </footer>
+        {% endif %}
+    </div>
+</body>
+
+</html>
+{% endspaceless %}

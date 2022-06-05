@@ -1,0 +1,52 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+
+<div class="uk-padding-small">
+    <h1>新規登録</h1>
+
+    {% if form.errors %}
+    <p>新規登録に失敗しました。もう一度お試しください。</p>
+    {% endif %}
+            
+    <form method="post">
+        {% csrf_token %}
+        <div class="uk-margin">
+            <div class="uk-inline">
+                <span class="uk-form-icon" uk-icon="icon: user"></span>
+                {{ form.username }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-inline">
+                <span class="uk-form-icon" uk-icon="icon: pencil"></span>
+                {{ form.nickname }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-inline">
+                <span class="uk-form-icon" uk-icon="icon: mail"></span>
+                {{ form.email }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-inline">
+                <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                {{ form.password1 }}
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-inline">
+                <span class="uk-form-icon" uk-icon="icon: unlock"></span>
+                {{ form.password2 }}
+            </div>
+        </div>
+        <button type="submit" class="submit uk-button uk-button-primary">新規登録</button>
+    </form>
+</div>
+
+<div class="uk-padding-small">
+    <a href='/'>トップ</a><br>
+    <a href='/accounts/login/'>ログイン</a>
+</div>
+
+{% endblock %}

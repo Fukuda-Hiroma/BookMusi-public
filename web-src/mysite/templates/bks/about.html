@@ -1,0 +1,144 @@
+{% extends 'bks/base.html' %}
+{% block content %}
+{% load static %}
+
+
+<div class="uk-padding-small">
+    <div class="uk-text-center">
+        <img data-src="{% static 'images/logo.png' %}" width="480" height="270" alt="" uk-img>
+    </div>
+    <h1>BooQ（ブーキュー）は、みんなで本を探せる質問サイトです！</h1>
+    <h2>小説からマンガ、図鑑、レシピ、辞書まで本だったらなんでもあり！みんなのおすすめを聞いてみよう！</h2> 
+</div>
+<div class="top_links">
+    <div class="links" uk-grid>
+        <div class="uk-width-1-4 navigation"><a href="/about"></a><span uk-icon="icon: info; ratio: 1.8"></span><br><span class="text">こんな本が<br>ないかな…</span></div></a>
+        <div class="uk-width-1-4 navigation"><a href="/new"></a><span uk-icon="icon: plus; ratio: 1.8"></span><br><span class="text">質問して<br>みよう！</span></div>
+        <div class="uk-width-1-4 navigation"><a href="/inquiry"></a><span uk-icon="icon: commenting; ratio: 1.8"></span><br><span class="text">コメントして<br>おすすめ</span></div>
+        <div class="uk-width-1-4 navigation"><a href="/impress"></a><span uk-icon="icon: check; ratio: 1.8"></span><br><span class="text">読んだら<br>感想を送信</span></div>
+    </div>
+</div>
+<div class="uk-padding-small">
+    {% if user.is_authenticated == 1 %}
+        <div class="uk-margin-small">
+            <span class="uk-margin-small-right" uk-icon="icon: user; ratio: 1"></span><a href="/mypage" class="uk-button uk-button-primary uk-margin-small-right">マイページへ</a>
+            <span class="uk-margin-small-right" uk-icon="icon: search; ratio: 1"></span><a href="" class="uk-button uk-button-primary" uk-toggle="target: #search">質問を検索する</a>
+        </div>
+    {% else %}
+    <h3>登録して楽しもう！</h3>
+    <div uk-grid>
+        <div class="uk-width-1-2 uk-text-center">
+            <a href='/accounts/signup' class="uk-button uk-button-primary">新規登録</a>
+        </div>
+        <div class="uk-width-1-2 uk-text-center">
+            <a href='/accounts/login' class="uk-button uk-button-default">ログイン</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<br>
+
+<h1 class="a-h2">例えばこんな質問</h1>
+<div class="bk-box-container">
+    <p>※これは参考例のダミー質問です</p>
+    <div class="bk-box">
+        <div class="bk-box-header"><a href=""></a>
+            <div class="title">胸がアツくなる漫画を教えて！</div>
+            <div class="arrow">&gt;</div>
+        </div>
+        <div class="bk-box-body"><p>グッとくる漫画が知りたいです！</p></div>
+        <div class="bk-box-footer" uk-grid>
+            <div class="name uk-width-1-2">質問者：BooQ</div>
+            <div class="tags uk-width-1-2"><a href="/search/tags=漫画">#漫画</a></div>
+        </div>
+    </div>
+    <div class="bk-box">
+        <div class="bk-box-header"><a href=""></a>
+            <div class="title">ズボラでもできる料理を教えて</div>
+            <div class="arrow">&gt;</div>
+        </div>
+        <div class="bk-box-body"><p>春から一人暮らしを始めて、料理をする機会が増えたのですが、とにかく面倒くさく感じてきたので、楽になれるレシピ本を知りたいです！</p></div>
+        <div class="bk-box-footer" uk-grid>
+            <div class="name uk-width-1-2">質問者：BooQ</div>
+            <div class="tags uk-width-1-2"><a href="/search/tags=料理">#料理</a></div>
+        </div>
+    </div>
+    <div class="bk-box">
+        <div class="bk-box-header"><a href=""></a>
+            <div class="title">人間が怖いタイプのホラー小説を読みたい</div>
+            <div class="arrow">&gt;</div>
+        </div>
+        <div class="bk-box-body"><p>オバケではなく、人間が怖いストーリー展開の小説を教えてください。猟奇要素があるとなお良しです。</p></div>
+        <div class="bk-box-footer" uk-grid>
+            <div class="name uk-width-1-2">質問者：BooQ</div>
+            <div class="tags uk-width-1-2"><a href="/search/tags=小説">#小説</a></div>
+        </div>
+    </div>
+</div>
+<div uk-grid>
+    <div class="uk-width-1-2 uk-text-center uk-margin">
+        <a href='/new' class="uk-button uk-button-primary">実際に質問してみる！</a>
+    </div>
+    <div class="uk-width-1-2 uk-text-center">
+        <a href='/inquiry' class="uk-button uk-button-primary">質問を探してみる！</a>
+    </div>
+</div>
+
+<div class="uk-padding-small">
+    <h1>回答に本を貼り付けられる！</h1>
+    <p>楽天ブックスのデータベースから検索して貼り付けられます</p>
+</div>
+<div class="bk-box-container">
+    <div class="bk-box">
+        <div class="bk-box-header">
+            <div uk-grid>
+                <div class="uk-width-auto a-book-image">
+                    <img id="nw-largeImageUrl" src="{% static 'images/book_mystery.png' %}" alt="" uk-img>
+                </div>
+                <div class="uk-width-expand a-book-container">
+                    <span id="nw-publisherName">サンプル書店</span><br>
+                    <span id="nw-title" class="title">激アツ伝説 アツシ</span>
+                    <div uk-grid>
+                        <div class="a-status">
+                            <ul>
+                                <li><span id="nw-author">熱波燃盛男</span></li>
+                                <li><span id="nw-salesDate">2021年1月</span></li>
+                                <li><span id="nw-isbn">ISBN XXXXXXXXXXXXX</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bk-box-body" uk-grid>
+            <div class="uk-width-auto a-icon"><img src="{% static 'images/icon.png' %}" class="user-a-icon"></div>
+            <div class="uk-width-expand uk-flex uk-flex-middle">
+                この漫画はアツい！
+            </div>
+            <div class="uk-width-1-1">
+                <p>回答者：サブちゃん <span class="uk-text-muted"> ―― 2022/01/01 00:00</span></p>
+            </div>
+            <div class="uk-width-1-1">
+                <p>目まぐるしく回る展開はずっと目が離せない！</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="uk-padding-small">
+    <h3>読み終わったら回答者に返信できる！</h3>
+    <p>本の感想を教えてあげよう！同じ本を教えてくれたみんなに感想が届く</p>
+
+    <h1>始めよう！</h1>
+    <div uk-grid>
+        <div class="uk-width-1-2 uk-text-center uk-margin">
+            <a href='/new' class="uk-button uk-button-primary">実際に質問してみる！</a>
+        </div>
+        <div class="uk-width-1-2 uk-text-center">
+            <a href='/inquiry' class="uk-button uk-button-primary">質問を探してみる！</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'bks/base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="uk-padding-small" uk-grid>
+    <div class="uk-width-1-1@s uk-width-1-2@m uk-text-center">
+        <img data-src="{% static 'images/logo.png' %}" width="240" height="135" alt="" uk-img>
+    </div>
+    <div class="uk-width-1-1@s uk-width-1-2@m uk-text-center">
+        <h3>あなたの知らない本を、みんなと見つける</h3>
+        <p>小説、レシピ、辞書、マンガ、図鑑……<br>
+        本だったら何でもあり！早速聞いてみよう！</p>
+    </div>
+</div>
+<div class="top_links">
+    <div class="links" uk-grid>
+        <div class="uk-width-1-4 navigation"><a href="/about"></a><span uk-icon="icon: info; ratio: 1.8"></span><br><span class="text">こんな本が<br>ないかな…</span></div></a>
+        <div class="uk-width-1-4 navigation"><a href="/new"></a><span uk-icon="icon: plus; ratio: 1.8"></span><br><span class="text">質問して<br>みよう！</span></div>
+        <div class="uk-width-1-4 navigation"><a href="/inquiry"></a><span uk-icon="icon: commenting; ratio: 1.8"></span><br><span class="text">コメントして<br>おすすめ</span></div>
+        <div class="uk-width-1-4 navigation"><a href="/impress"></a><span uk-icon="icon: check; ratio: 1.8"></span><br><span class="text">読んだら<br>感想を送信</span></div>
+    </div>
+</div>
+<div class="uk-padding-small">
+    {% if user.is_authenticated == 1 %}
+    <h3>ようこそ、{{ user.nickname }} さん！</h3>
+        <div class="uk-margin-small">
+            <span class="uk-margin-small-right" uk-icon="icon: user; ratio: 1"></span><a href="/mypage" class="uk-button uk-button-primary uk-margin-small-right">マイページへ</a>
+            <span class="uk-margin-small-right" uk-icon="icon: search; ratio: 1"></span><a href="" class="uk-button uk-button-primary" uk-toggle="target: #search">質問を検索する</a>
+        </div>
+        <a href='/accounts/logout' class="uk-button uk-button-text">ログアウト</a>
+    {% else %}
+    <h3>BooQ（ブーキュー）にようこそ<br>
+    <small>このサイトは一体何？初めての方はこちら↓</small></h3>
+    <div class="uk-text-center"><a href='/about' class="uk-button uk-button-primary uk-button-large">BooQとは？</a></div>
+    
+
+    <h3>登録して楽しもう！</h3>
+    <div uk-grid>
+        <div class="uk-width-1-2 uk-text-center">
+            <a href='/accounts/signup' class="uk-button uk-button-primary">新規登録</a>
+        </div>
+        <div class="uk-width-1-2 uk-text-center">
+            <a href='/accounts/login' class="uk-button uk-button-default">ログイン</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<div class="bk-box-container">
+    {% for a in inquiry_list %}
+        <div class="bk-box">
+            <div class="bk-box-header"><a href="/inquiry/{{ a.inquiryuuid }}"></a>
+                <div class="title">{{ a.title }}</div>
+                <div class="arrow">&gt;</div>
+            </div>
+            <div class="bk-box-body"><p>{{ a.body }}</p></div>
+            <div class="bk-box-footer" uk-grid>
+                <div class="name uk-width-1-2">質問者：{{ a.useruuid.nickname }}</div>
+                <div class="tags uk-width-1-2"><a href="/search/tags={{ a.tags }}">#{{ a.tags }}</a></div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="uk-text-center">
+        <a href="/inquiry" class="uk-button uk-button-primary">もっと見る</a>
+    </div>
+</div>
+<div class="uk-padding-small">
+    <div class="uk-margin">
+        <code>
+            BooQ beta / VERSION 0.1.6-n
+        </code><br>
+        <!-- Rakuten Web Services Attribution Snippet FROM HERE -->
+        <a href="https://developers.rakuten.com/" target="_blank">Supported by Rakuten Developers</a>
+        <!-- Rakuten Web Services Attribution Snippet TO HERE -->
+    </div>
+</div>
+{% endblock %}
